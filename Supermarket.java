@@ -41,17 +41,56 @@ public class Supermarket {
                 continue;
             }
 
-            switch (args) {
-                case value:
-
+            // this acts as my api routes
+            switch (choice) {
+                case 1:
+                    addNewProduct();
                     break;
-
+                case 2:
+                    // viewInventory();
+                    break;
+                case 3:
+                    System.out.println(" Billing System is Under Construction (Coming Day 2)");
+                    break;
+                case 4:
+                    isRunning = false;
+                    System.out.println("Exiting System... Goodbye!");
+                    break;
                 default:
-                    break;
+                    System.out.println("❌ Invalid Option. Try again.");
             }
 
         }
 
+    }
+
+    // now these are my service layer style function
+
+    public static void addNewProduct() {
+
+        System.out.println("add new product");
+
+        if (productCount >= inventory.length) {
+            System.out.println("Storage is full. make sure to update the capacity of static array");
+            return;
+        }
+
+        System.out.println("Product Name => ");
+        String name = scanner.nextLine();
+
+        System.out.println("Product SKU => ");
+        String sku = scanner.nextLine();
+
+        System.out.println("Product price => ");
+        double price = scanner.nextInt();
+
+        System.out.println("Product quantity => ");
+        int quantity = scanner.nextInt();
+
+        Product newProduct = new Product(name, price, sku, quantity);
+
+        inventory[productCount] = newProduct;
+        productCount++;
     }
 
 }

@@ -10,7 +10,7 @@ public class Product {
     private static int idCounter = 1;
 
     // this constructor acts as a createProduct function
-    Product(int id, String name, double price, String productSKU, int stockQuantity) {
+    Product(String name, double price, String productSKU, int stockQuantity) {
         this.id = idCounter;
         idCounter++;
         this.name = name;
