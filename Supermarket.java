@@ -50,14 +50,14 @@ public class Supermarket {
                     viewInventory();
                     break;
                 case 3:
-                    System.out.println(" Billing System is Under Construction (Coming Day 2)");
+                    checkout();
                     break;
                 case 4:
                     isRunning = false;
-                    System.out.println("Exiting System... Goodbye!");
+                    System.out.println("Exiting System... Shutting Down!");
                     break;
                 default:
-                    System.out.println("❌ Invalid Option. Try again.");
+                    System.out.println(" Invalid Option. Try again.");
             }
 
         }
@@ -86,6 +86,7 @@ public class Supermarket {
 
         System.out.print("Product quantity => ");
         int quantity = scanner.nextInt();
+        scanner.nextLine();
 
         Product newProduct = new Product(name, price, sku, quantity);
 
@@ -109,14 +110,68 @@ public class Supermarket {
          * - means left align
          * 5s,10s,15s and so on,,, means those empty character . It just create a width
          */
-        System.out.printf("%-2s | %-20s | %-30s | %-20s | %-5s\n", "ID", "SKU", "Name", "Price", "Stock");
+        System.out.printf("%-2s | %-20s | %-30s | %-15s | %-5s\n", "ID", "SKU", "Name", "Price", "Stock");
         System.out.println("----------------------------------------------------------");
 
         for (int i = 0; i < productCount; i++) {
             Product p = inventory[i];
-            System.out.printf("%-5d | %-10s | %-15s | %-9.2f Tk | %-5d\n",
+            System.out.printf("%-2d | %-20s | %-30s | %-15.2f Tk | %-5d\n",
                     p.getId(), p.getSku(), p.getName(), p.getPrice(), p.getStockQuantity());
         }
+    }
+
+    public static void checkout() {
+
+        System.out.println("\n \n---  CHECKOUT function ------------\n");
+
+        System.out.print("Enter Product SKU to purchase it => ");
+
+        String providedSku = scanner.nextLine();
+
+        Product foundProduct = null;
+
+        for (int i = 0; i < productCount; i++) {
+
+            if (inventory[i].getSku().equals(providedSku)) {
+                foundProduct = inventory[i];
+                break;
+            }
+
+        }
+
+        if (foundProduct == null) {
+            System.out.println(
+                    "\n------Sorry we didnt found any product By the Given SKU..........Please Cross check provided sku.");
+            return;
+        }
+
+        System.out.println("Product Found! \n Product name => " + foundProduct.getName());
+        System.out.printf("   Price: $%.2f | Available Stock: %d\n",
+                foundProduct.getPrice(), foundProduct.getStockQuantity());
+
+        System.out.print("How many Quantity You want to purchase =>  ");
+
+        int requestedQty = scanner.nextInt();
+        scanner.nextLine();
+
+        boolean isSuccess = foundProduct.sellProduct(requestedQty);
+
+        if (isSuccess) {
+
+            double totalCost = foundProduct.getPrice() * requestedQty;
+
+            System.out.println("\n==============================");
+            System.out.println("           RECEIPT           ");
+            System.out.println("============================== \n");
+            System.out.printf(" Item: %s\n", foundProduct.getName());
+            System.out.printf(" Quantity:  %d\n", requestedQty);
+            System.out.printf(" Unit Price:$%.2f\n", foundProduct.getPrice());
+            System.out.println("------------------------------");
+            System.out.printf(" TOTAL DUE: $%.2f\n", totalCost);
+            System.out.println("\n ==============================");
+            System.out.println("   Thank you for shopping!   \n");
+        }
+
     }
 
 }
